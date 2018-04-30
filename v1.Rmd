@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 ```
 
 ### <span style="color:darkblue">Introduction</b></span>
-In this mini-data analysis, individual household electric power consumption Data Set is used to do exploratory data analyais and visualization. The data is downloaded from [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/individual+household+electric+power+consumption).  It gives measurements of electric power consumption in one household near Paris with a one-minute sampling rate over a period of almost 4 years. Different electrical quantities and some sub-metering values are available including total power usage, kitchen, laundry, air conditioning, and other (the rest).
+In this mini-data analysis, individual household electric power consumption Data Set is used to do exploratory data analyais and visualization. The data is downloaded from [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/individual+household+electric+power+consumption).  It gives measurements of electric power consumption in one household near Paris with a one-minute sampling rate over a period of almost 4 years. Different electrical quantities and some sub-metering values are available including total power usage, kitchen, laundry, air conditioning, and other (the rest which is infered from the total and the three available categories).
 
 
 ### <span style="color:darkblue">Preliminary Analysis</b></span>
@@ -140,7 +140,7 @@ grid.arrange(p1,p2,nrow=2)
 ```{r fig.height=4}
 df2%>%drop_na()%>%mutate(YearMon =as.yearmon(Date))%>%group_by(YearMon,key)%>%dplyr::summarise(ave=mean(value))->meanByMonth
 
-ggplot(meanByMonth)+geom_point(aes(YearMon,ave),size=5)+ggtitle("Monthly Mean")+facet_wrap(~key,scales="free_y",nrow=4)
+ggplot(meanByMonth)+geom_point(aes(YearMon,ave),size=2)+ggtitle("Monthly Mean")+facet_wrap(~key,scales="free_y",nrow=4)
 ```
 
 * Monthly mean time series show similar pattern as the daily. The majority of the power usage are from air-conditioning & water heater and from the other category.
@@ -151,14 +151,14 @@ df3%>%drop_na()%>%mutate(Year =year(Date))%>%group_by(Year,key)%>%dplyr::summari
 ```
 
 ```{r}
-meanByYear%>%filter(Year>=2007)%>%group_by(Year)%>%dplyr::summarise(tot=sum(ave))%>%ggplot()+geom_point(aes(Year,tot),size=5)+ggtitle("Yearly Mean")+xlim(2007,2010)
-meanByYear%>%filter(Year>=2007)%>%ggplot()+geom_point(aes(Year,ave),size=5)+ggtitle("Yearly Mean")+facet_wrap(~key,scales="free_y",nrow=2)+xlim(2007,2010)
-meanByYear_pct%>%filter(Year>=2007)%>%ggplot()+geom_point(aes(Year,ave_pct),size=5)+ggtitle("Yearly Mean")+facet_wrap(~key,scales="free_y",nrow=2)+xlim(2007,2010)
+meanByYear%>%filter(Year>=2007)%>%group_by(Year)%>%dplyr::summarise(tot=sum(ave))%>%ggplot()+geom_point(aes(Year,tot),size=3)+ggtitle("Yearly Mean")+xlim(2007,2010)
+meanByYear%>%filter(Year>=2007)%>%ggplot()+geom_point(aes(Year,ave),size=3)+ggtitle("Yearly Mean")+facet_wrap(~key,scales="free_y",nrow=2)+xlim(2007,2010)
+meanByYear_pct%>%filter(Year>=2007)%>%ggplot()+geom_point(aes(Year,ave_pct),size=3)+ggtitle("Yearly Mean")+facet_wrap(~key,scales="free_y",nrow=2)+xlim(2007,2010)
 ```
 
 * Year 2007 has the highest mean yearly usage. The rest of the 3 years some what similar. 
 * The usage of air conditioning+water heater increased over the year.
 * The usage of the other, the kitchen and the laundry shows a rough decreasing over the 4 years
 * The percentage usage are roughly the same as the absolute pattern
-* With the domiant categories of air-conditioninig+water heater and the other compensating each other, the overall yearly mean decreased. 
+* With the dominant categories of air-conditioninig+water heater and the other compensating each other, the overall yearly mean decreased. 
 * The increasing usage of air-conditioninig and the decreasing usage in the other category needs further exploration to explain. Maybe due to the different weather. 
