@@ -1,0 +1,13 @@
+base
+data.table
+vcd
+gnm
+vcdExtra
+extracat
+tidyr
+dplyr
+zoo
+forcats
+gridExtra
+ggplot2
+bindrcpp
